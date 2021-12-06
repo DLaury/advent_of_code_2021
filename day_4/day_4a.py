@@ -17,7 +17,7 @@ def bingo_score(numbers, cards):
     called_nums = numbers[:start]
     running = True
     while running:
-        for i, card in enumerate(cards):
+        for card in cards:
             for row in card:
                 if all(nums in called_nums for nums in row):
                     return np.sum(card, where=np.isin(card, numbers[:start], invert=True)) * numbers[start-1]
