@@ -20,10 +20,10 @@ def bingo_score(numbers, cards):
         for i, card in enumerate(cards):
             for row in card:
                 if all(nums in called_nums for nums in row):
-                    return sum(row) * numbers[start-1]
+                    return np.sum(card, where=np.isin(card, numbers[:start], invert=True)) * numbers[start-1]
             for column in card.transpose():
                 if all(nums in called_nums for nums in column):
-                    return sum(row) * numbers[start-1]
+                    return np.sum(card, where=np.isin(card, numbers[:start], invert=True)) * numbers[start-1]
         start += 1
         called_nums = numbers[:start]
 
