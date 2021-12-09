@@ -1,14 +1,19 @@
-import numpy as np
+import collections
+
 with open('day_6\input.txt') as f:
-    ages = np.array(f.readline().split(',')).astype(np.int32)
+    init_dict = collections.Counter((map(int,f.readline().split(','))))
 
-def fish(timers, days):
-    for day in range(0, days):
-        timers = timers - 1
-        num_zeros = len(timers[timers==-1])
-        timers = np.where(timers == -1, 6, timers)
-        zeros = (np.array([8] * num_zeros,  dtype=int))
-        timers = np.concatenate((timers, zeros), axis=None)
-    print(len(timers))
+def update_timers(start_day):
+    fish = {}
+    for x in [1,2,3,4,5,6,8]:
+        fish[x-1] = start_day[x]
+    fish[8]= start_day[0]
+    fish[6] = start_day[7] + start_day[0]
+    return fish
 
-fish(ages, 80)
+def count_fish(fish_dict, days):
+    for _ in range(0, days):
+        fish_dict = update_timers(fish_dict)
+    return(sum(fish_dict.values()))
+
+print(count_fish(init_dict, 256))
