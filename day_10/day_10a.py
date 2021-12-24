@@ -6,8 +6,11 @@ with open('day_10\input.txt') as f:
 close = [')',']','}','>']
 close_re = r'[\]}\)>]'
 char_dict = {')': '(', ']': '[', '}': '{', '>': '<'}
+end_dict = {'(': ')', '[': ']', '{': '}', '<': '>'}
 val_dict = {')': 3, ']': 57, '}': 1197, '>': 25137}
+score_dict = {')': 1, ']': 2, '}': 3, '>': 4}
 total = []
+scores = []
 
 def check_for_closed(line):
     pair_removed = False
@@ -23,11 +26,18 @@ def check_for_closed(line):
     if any(i in line for i in close):
         return re.search(close_re, ''.join(line)).group()
     else:
-        return None
+        return [*map(end_dict.get, line)][::-1]
 
 for syn in syntax:
     temp = check_for_closed(syn)
-    if temp:
+    val = 0
+    if type(temp) ==  list:
+        for x in temp:
+            val *= 5
+            val += score_dict[x]
+        scores.append(val)
+    else:
         total.append(val_dict[temp])
 
 print(sum(total))
+print(sorted(scores)[len(scores) // 2])
